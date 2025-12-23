@@ -22,7 +22,6 @@ public class User {
 
     @Column(nullable = false)
     private String password;
-<<<<<<< HEAD
 
     @Column(nullable = false)
     private String role = "USER";
@@ -33,6 +32,4 @@ public class User {
         this.password = password;
         this.role = role;
     }
-=======
->>>>>>> origin/master
 }

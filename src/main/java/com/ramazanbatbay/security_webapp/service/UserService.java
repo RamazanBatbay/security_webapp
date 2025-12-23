@@ -1,10 +1,6 @@
 package com.ramazanbatbay.security_webapp.service;
 
 import com.ramazanbatbay.security_webapp.model.User;
-<<<<<<< HEAD
-=======
-import com.ramazanbatbay.security_webapp.model.dto.CreateUserRequest;
->>>>>>> origin/master
 import com.ramazanbatbay.security_webapp.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -12,11 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-<<<<<<< HEAD
 public class UserService implements org.springframework.security.core.userdetails.UserDetailsService {
-=======
-public class UserService {
->>>>>>> origin/master
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -26,7 +18,6 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-<<<<<<< HEAD
     public User createUser(String username, String email, String password) {
         if (userRepository.findByEmail(email).isPresent()) {
             throw new RuntimeException("Email already taken");
@@ -64,34 +55,3 @@ public class UserService {
                 .build();
     }
 }
-=======
-    public User createUser(CreateUserRequest request) {
-        if (userRepository.findByEmail(request.getEmail()).isPresent()) {
-            throw new RuntimeException("Email already taken");
-        }
-
-        User user = new User();
-        user.setUsername(request.getUsername());
-        user.setEmail(request.getEmail());
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
-
-        return userRepository.save(user);
-    }
-
-    public User authenticate(String email, String password) {
-        Optional<User> userOptional = userRepository.findByEmail(email);
-
-        if (userOptional.isEmpty()) {
-            throw new RuntimeException("Invalid email or password");
-        }
-
-        User user = userOptional.get();
-
-        if (!passwordEncoder.matches(password, user.getPassword())) {
-            throw new RuntimeException("Invalid email or password");
-        }
-
-        return user;
-    }
-}
->>>>>>> origin/master
