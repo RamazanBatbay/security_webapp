@@ -1,15 +1,21 @@
 # Security Webapp
 
-A Spring Boot application demonstrating secure user management, SQLite integration with Flyway migrations, and a layered architecture.
+A full-stack Spring Boot application demonstrating secure user management, personalized notes, and a responsive UI built with Thymeleaf and TailwindCSS.
 
 ## Features
-- **User Management**: Register and Authenticate users.
-- **Security**: Password hashing using BCrypt.
-- **Database**: SQLite (local file) with Hibernate 7.
-- **Migrations**: Database schema management with Flyway.
-- **REST API**: Simple endpoints for testing.
+
+- **User Authentication**: Secure Login and Registration pages with validation.
+- **Note Management**: Create, view, and delete personal notes.
+- **Security**: 
+    - Password hashing using BCrypt.
+    - Role-based access control.
+    - CSRF protection.
+- **UI**: Modern, responsive interface using Thymeleaf and TailwindCSS.
+- **Database**: SQLite (local file) with Flyway for schema migrations.
+- **Architecture**: Layered architecture (Controller, Service, Repository) with DTOs.
 
 ## Prerequisites
+
 - Java 21
 - Gradle (Wrapper included)
 
@@ -42,31 +48,38 @@ Use the Gradle Wrapper to run the app:
 
 The application will start on `http://localhost:8080`.
 
-## API Endpoints
+## Accessing the Application
 
-### Public Endpoints
-- **GET /hello**: Returns a greeting string.
-- **GET /user**: Returns a sample User JSON object.
+### Web Interface (Browser)
+- **Home**: `http://localhost:8080/` (Redirects to `/notes` or `/login`)
+- **Login**: `http://localhost:8080/login`
+- **Register**: `http://localhost:8080/register`
+- **My Notes**: `http://localhost:8080/notes` (Protected, requires login)
 
-### User Management
-- **POST /api/users/register**: Register a new user.
-  ```bash
-  curl -X POST http://localhost:8080/api/users/register \
-       -H "Content-Type: application/json" \
-       -d '{"username": "testuser", "email": "test@example.com", "password": "password123"}'
-  ```
+### API Endpoints (For Clients)
+The application also exposes REST endpoints for programmatic access:
 
-- **POST /api/users/login**: Access protected endpoints (or verify credentials).
-  ```bash
-  curl -X POST "http://localhost:8080/api/users/login?email=test@example.com&password=password123"
-  ```
+- **Auth**:
+    - `POST /api/register` - Create a new user (JSON body).
+    - `POST /api/login` - Authenticate and receive a session/token.
+- **Public**:
+    - `GET /hello` - Health check.
 
 ## Project Structure
+
 ```
 src/main/java/com/ramazanbatbay/security_webapp/
-├── config/         # Security Configuration
-├── controller/     # REST Controllers
+├── config/         # Security Configuration (SecurityConfig.java)
+├── controller/     # REST Controllers for API endpoints
+├── pages/          # UI Controllers for Thymeleaf pages
 ├── model/          # JPA Entities and DTOs
 ├── repository/     # Data Access Layer
-└── service/        # Business Logic
+├── service/        # Business Logic
+├── validation/     # Custom Validation Logic
+└── exception/      # Global Exception Handling
+
+src/main/resources/
+├── templates/      # Thymeleaf HTML Templates
+├── static/         # Static assets (CSS, JS)
+└── db/migration/   # Flyway SQL Migrations
 ```
