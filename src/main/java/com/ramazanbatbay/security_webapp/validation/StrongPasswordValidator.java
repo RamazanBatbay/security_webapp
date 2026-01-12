@@ -36,7 +36,7 @@ public class StrongPasswordValidator implements ConstraintValidator<StrongPasswo
         }
         if (!password.matches(".*[_@#$%^&+=!].*")) {
             context.buildConstraintViolationWithTemplate(
-                            "Password must contain at least one special character (@#$%^&+=!)")
+                    "Password must contain at least one special character (_@#$%^&+=!)")
                     .addConstraintViolation();
             isValid = false;
         }

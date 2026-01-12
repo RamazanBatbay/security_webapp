@@ -1,18 +1,36 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const loginForm = document.getElementById('loginForm');
+document.getElementById('loginForm').addEventListener('submit', async function (e) {
+    e.preventDefault();
 
-    // Visual enhancement: focus the username field on load
-    const usernameInput = document.getElementById('username');
-    if (usernameInput) {
-        usernameInput.focus();
-    }
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    const messageEl = document.getElementById('message');
 
-    // Optional: Add client-side pre-validation or animation hooks here
-    loginForm.addEventListener('submit', (e) => {
-        const btn = loginForm.querySelector('button[type="submit"]');
-        if (btn) {
-            btn.innerHTML = 'Signing In...';
-            btn.style.opacity = '0.8';
+    messageEl.textContent = 'Logging in...';
+    messageEl.className = 'message';
+
+    try {
+        const response = await fetch('/api/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email, password })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            messageEl.textContent = 'Login successful! Redirecting...';
+            messageEl.className = 'message success';
+            // Placeholder redirect
+            window.location.href = '/hello';
+        } else {
+            messageEl.textContent = data.message || 'Login failed';
+            messageEl.className = 'message error';
         }
-    });
+    } catch (error) {
+        console.error('Error:', error);
+        messageEl.textContent = 'An error occurred. Please try again.';
+        messageEl.className = 'message error';
+    }
 });
