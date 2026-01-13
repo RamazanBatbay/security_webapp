@@ -10,7 +10,6 @@ import java.util.List;
 public interface NoteRepository extends JpaRepository<Note, Integer> {
     List<Note> findByUserId(Integer userId);
 
-    // Requirement: At least one raw SQL query with prepared statements
     @Query(value = "SELECT * FROM notes WHERE user_id = :userId ORDER BY created_at DESC", nativeQuery = true)
     List<Note> findAllByUserIdOrderByCreatedAtDesc(@Param("userId") Integer userId);
 }

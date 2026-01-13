@@ -47,7 +47,6 @@ public class NoteController {
         try {
             noteService.deleteNote(userDetails.getUsername(), id);
         } catch (RuntimeException e) {
-            // In a real app, adding a flash attribute for error message would be better
             return "redirect:/notes?error=" + e.getMessage();
         }
         return "redirect:/notes";

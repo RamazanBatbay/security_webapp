@@ -25,7 +25,6 @@ public class UserController {
             @RequestHeader(value = "X-Source", required = false, defaultValue = "Web") String source,
             @Valid @RequestBody UserRegisterDto request) {
 
-        // Log source (demonstration of @RequestHeader)
         System.out.println("Registration request from source: " + source);
 
         User user = userService.createUser(
@@ -41,7 +40,6 @@ public class UserController {
                 request.getEmail(),
                 request.getPassword());
 
-        // Manually set authentication in SecurityContext
         org.springframework.security.core.userdetails.UserDetails userDetails = org.springframework.security.core.userdetails.User
                 .builder()
                 .username(user.getEmail())

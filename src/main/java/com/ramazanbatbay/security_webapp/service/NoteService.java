@@ -21,7 +21,6 @@ public class NoteService {
 
     public List<Note> getNotesForUser(String email) {
         Integer userId = getUserIdByEmail(email);
-        // Using the native query requirement
         return noteRepository.findAllByUserIdOrderByCreatedAtDesc(userId);
     }
 

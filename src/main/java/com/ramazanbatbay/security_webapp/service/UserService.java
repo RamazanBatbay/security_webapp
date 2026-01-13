@@ -27,8 +27,6 @@ public class UserService implements org.springframework.security.core.userdetail
         return userRepository.save(user);
     }
 
-    // Manual authentication not needed with Spring Security form login, but keeping
-    // for reference
     public User authenticate(String email, String password) {
         Optional<User> userOptional = userRepository.findByEmail(email);
         if (userOptional.isPresent()) {
@@ -47,11 +45,10 @@ public class UserService implements org.springframework.security.core.userdetail
                 .orElseThrow(() -> new org.springframework.security.core.userdetails.UsernameNotFoundException(
                         "User not found with email: " + email));
 
-        // Convert our User entity to Spring Security's UserDetails
         return org.springframework.security.core.userdetails.User.builder()
-                .username(user.getEmail()) // Use email as username/id for login
-                .password(user.getPassword()) // Encoded password from DB
-                .roles(user.getRole()) // e.g., "USER"
+                .username(user.getEmail())
+                .password(user.getPassword())
+                .roles(user.getRole())
                 .build();
     }
 }
