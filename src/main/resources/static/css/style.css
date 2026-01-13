@@ -2,16 +2,12 @@
 
 :root {
     --bg-color: #020617;
-    /* Slate 950 */
     --card-bg: #0f172a;
-    /* Slate 900 */
     --text-primary: #f8fafc;
     --text-secondary: #94a3b8;
     --primary: #06b6d4;
-    /* Cyan 500 */
     --primary-glow: rgba(6, 182, 212, 0.4);
     --secondary: #10b981;
-    /* Emerald 500 */
     --accent-red: #ef4444;
     --border-color: #1e293b;
 }
@@ -35,7 +31,6 @@ body {
     overflow: hidden;
 }
 
-/* "Glow" elements simplified to tech blobs */
 .glow {
     position: absolute;
     width: 600px;
@@ -67,16 +62,13 @@ body {
     backdrop-filter: blur(12px);
     border: 1px solid var(--border-color);
     border-top: 1px solid rgba(6, 182, 212, 0.3);
-    /* Subtle top cyan highlight */
     padding: 3rem;
     border-radius: 4px;
-    /* Sharper corners */
     width: 100%;
     max-width: 380px;
     box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
 }
 
-/* Tech Header */
 h2 {
     margin-bottom: 2rem;
     font-family: 'JetBrains Mono', monospace;
@@ -104,7 +96,6 @@ label {
     letter-spacing: 1px;
 }
 
-/* Tech Inputs */
 input {
     width: 100%;
     padding: 1rem;
@@ -129,7 +120,6 @@ input::placeholder {
     color: #475569;
 }
 
-/* Tech Button */
 button {
     width: 100%;
     padding: 1rem;
@@ -137,7 +127,6 @@ button {
     border: none;
     border-radius: 2px;
     color: #020617;
-    /* Dark text for contrast */
     font-family: 'JetBrains Mono', monospace;
     font-size: 1rem;
     font-weight: 700;

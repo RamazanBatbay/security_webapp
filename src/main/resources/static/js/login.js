@@ -22,7 +22,6 @@ document.getElementById('loginForm').addEventListener('submit', async function (
         if (response.ok) {
             messageEl.textContent = 'Login successful! Redirecting...';
             messageEl.className = 'message success';
-            // Placeholder redirect
             window.location.href = '/hello';
         } else {
             messageEl.textContent = data.message || 'Login failed';
