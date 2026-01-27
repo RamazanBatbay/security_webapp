@@ -18,9 +18,6 @@ public class SecurityConfig {
                 return new BCryptPasswordEncoder();
         }
 
-        @org.springframework.beans.factory.annotation.Autowired
-        private JwtAuthenticationFilter jwtAuthenticationFilter;
-
         @Bean
         public org.springframework.security.authentication.AuthenticationManager authenticationManager(
                         org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration config)
@@ -29,40 +26,12 @@ public class SecurityConfig {
         }
 
         @Bean
-        @org.springframework.core.annotation.Order(1)
-        public SecurityFilterChain apiSecurityFilterChain(HttpSecurity http) throws Exception {
+        public SecurityFilterChain securityFilterChain(HttpSecurity http,
+                        com.ramazanbatbay.security_webapp.security.CustomAuthenticationFailureHandler failureHandler,
+                        com.ramazanbatbay.security_webapp.security.CustomAuthenticationEntryPoint entryPoint,
+                        com.ramazanbatbay.security_webapp.security.CustomAccessDeniedHandler accessDeniedHandler)
+                        throws Exception {
                 http
-                                .securityMatcher("/api/**")
-                                .csrf(csrf -> csrf.disable())
-                                .sessionManagement(session -> session.sessionCreationPolicy(
-                                                org.springframework.security.config.http.SessionCreationPolicy.STATELESS))
-                                .exceptionHandling(ex -> ex.authenticationEntryPoint(
-                                                new com.ramazanbatbay.security_webapp.config.CustomAuthenticationEntryPoint()))
-                                .authorizeHttpRequests(auth -> auth
-                                                .requestMatchers("/api/auth/**", "/api/register", "/api/login")
-                                                .permitAll()
-                                                .anyRequest().authenticated())
-                                .addFilterBefore(jwtAuthenticationFilter,
-                                                org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter.class)
-                                .addFilterBefore(new RateLimitingFilter(),
-                                                org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter.class)
-                                .headers(headers -> headers
-                                                .frameOptions(frame -> frame.deny())
-                                                .contentSecurityPolicy(
-                                                                csp -> csp.policyDirectives("default-src 'self'"))
-                                                .httpStrictTransportSecurity(hsts -> hsts
-                                                                .includeSubDomains(true)
-                                                                .maxAgeInSeconds(31536000))
-                                                .referrerPolicy(referrer -> referrer.policy(
-                                                                org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter.ReferrerPolicy.STRICT_ORIGIN_WHEN_CROSS_ORIGIN)));
-
-                return http.build();
-        }
-
-        @Bean
-        public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-                http
-                                .csrf(csrf -> csrf.disable())
                                 .authorizeHttpRequests(auth -> auth
                                                 .requestMatchers("/", "/hello/**", "/login", "/register", "/css/**",
                                                                 "/js/**", "/images/**",
@@ -74,8 +43,12 @@ public class SecurityConfig {
                                                 .loginPage("/login")
                                                 .loginProcessingUrl("/login")
                                                 .usernameParameter("email")
-                                                .defaultSuccessUrl("/notes", false)
+                                                .defaultSuccessUrl("/notes", true)
+                                                .failureHandler(failureHandler)
                                                 .permitAll())
+                                .exceptionHandling(ex -> ex
+                                                .authenticationEntryPoint(entryPoint)
+                                                .accessDeniedHandler(accessDeniedHandler))
                                 .logout(logout -> logout
                                                 .logoutUrl("/logout")
                                                 .logoutSuccessUrl("/login?logout")
@@ -87,9 +60,6 @@ public class SecurityConfig {
                                                 .frameOptions(frame -> frame.deny())
                                                 .contentSecurityPolicy(csp -> csp.policyDirectives(
                                                                 "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com"))
-                                                .httpStrictTransportSecurity(hsts -> hsts
-                                                                .includeSubDomains(true)
-                                                                .maxAgeInSeconds(31536000))
                                                 .referrerPolicy(referrer -> referrer.policy(
                                                                 org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter.ReferrerPolicy.STRICT_ORIGIN_WHEN_CROSS_ORIGIN)));
 

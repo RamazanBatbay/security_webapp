@@ -27,7 +27,12 @@ public class RegisterPageController {
             return "register";
         }
 
-        userService.createUser(request.getUsername(), request.getEmail(), request.getPassword());
+        try {
+            userService.createUser(request.getUsername(), request.getEmail(), request.getPassword());
+        } catch (RuntimeException e) {
+            bindingResult.rejectValue("email", "error.userRegisterDto", e.getMessage());
+            return "register";
+        }
         return "redirect:/login";
     }
 }
