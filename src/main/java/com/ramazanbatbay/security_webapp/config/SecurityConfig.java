@@ -21,7 +21,7 @@ public class SecurityConfig {
         @Bean
         public org.springframework.security.authentication.AuthenticationManager authenticationManager(
                         org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration config)
-                        throws Exception {
+        {
                 return config.getAuthenticationManager();
         }
 
@@ -30,7 +30,7 @@ public class SecurityConfig {
                         com.ramazanbatbay.security_webapp.security.CustomAuthenticationFailureHandler failureHandler,
                         com.ramazanbatbay.security_webapp.security.CustomAuthenticationEntryPoint entryPoint,
                         com.ramazanbatbay.security_webapp.security.CustomAccessDeniedHandler accessDeniedHandler)
-                        throws Exception {
+        {
                 http
                                 .authorizeHttpRequests(auth -> auth
                                                 .requestMatchers("/", "/hello/**", "/login", "/register", "/css/**",
