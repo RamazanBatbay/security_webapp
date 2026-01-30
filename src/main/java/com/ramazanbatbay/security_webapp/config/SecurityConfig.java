@@ -20,8 +20,7 @@ public class SecurityConfig {
 
         @Bean
         public org.springframework.security.authentication.AuthenticationManager authenticationManager(
-                        org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration config)
-        {
+                        org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration config) {
                 return config.getAuthenticationManager();
         }
 
@@ -29,8 +28,8 @@ public class SecurityConfig {
         public SecurityFilterChain securityFilterChain(HttpSecurity http,
                         com.ramazanbatbay.security_webapp.security.CustomAuthenticationFailureHandler failureHandler,
                         com.ramazanbatbay.security_webapp.security.CustomAuthenticationEntryPoint entryPoint,
-                        com.ramazanbatbay.security_webapp.security.CustomAccessDeniedHandler accessDeniedHandler)
-        {
+                        com.ramazanbatbay.security_webapp.security.CustomAccessDeniedHandler accessDeniedHandler,
+                        com.ramazanbatbay.security_webapp.security.LoginRateLimitFilter loginRateLimitFilter) {
                 http
                                 .authorizeHttpRequests(auth -> auth
                                                 .requestMatchers("/", "/hello/**", "/login", "/register", "/css/**",
@@ -46,6 +45,8 @@ public class SecurityConfig {
                                                 .defaultSuccessUrl("/notes", true)
                                                 .failureHandler(failureHandler)
                                                 .permitAll())
+                                .addFilterBefore(loginRateLimitFilter,
+                                                org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter.class)
                                 .exceptionHandling(ex -> ex
                                                 .authenticationEntryPoint(entryPoint)
                                                 .accessDeniedHandler(accessDeniedHandler))
