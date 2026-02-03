@@ -10,9 +10,11 @@ A full-stack Spring Boot application demonstrating secure user management, perso
     - Password hashing using BCrypt.
     - Role-based access control.
     - CSRF protection.
+    - Rate Limiting (Brute-force protection).
 - **UI**: Modern, responsive interface using Thymeleaf and TailwindCSS.
 - **Database**: SQLite (local file) with Flyway for schema migrations.
 - **Architecture**: Layered architecture (Controller, Service, Repository) with DTOs.
+- **CI/CD**: GitHub Actions for automated testing and code coverage (JaCoCo).
 
 ## Prerequisites
 
@@ -46,6 +48,22 @@ Use the Gradle Wrapper to run the app:
 ./gradlew bootRun
 ```
 
+### Running Tests
+
+To run tests with JaCoCo code coverage:
+
+**Windows:**
+```powershell
+.\gradlew test jacocoTestReport
+```
+
+**Mac/Linux:**
+```bash
+./gradlew test jacocoTestReport
+```
+
+Coverage reports will be generated in `build/reports/jacoco/test/html/index.html`.
+
 The application will start on `http://localhost:8080`.
 
 ## Accessing the Application
@@ -67,19 +85,20 @@ The application also exposes REST endpoints for programmatic access:
 
 ## Project Structure
 
-```
 src/main/java/com/ramazanbatbay/security_webapp/
 ├── config/         # Security Configuration (SecurityConfig.java)
 ├── controller/     # REST Controllers for API endpoints
-├── pages/          # UI Controllers for Thymeleaf pages
+├── exception/      # Global Exception Handling
 ├── model/          # JPA Entities and DTOs
+├── pages/          # UI Controllers for Thymeleaf pages
 ├── repository/     # Data Access Layer
+├── security/       # Security Filters and Logic
 ├── service/        # Business Logic
-├── validation/     # Custom Validation Logic
-└── exception/      # Global Exception Handling
+└── validation/     # Custom Validation Logic
+
 
 src/main/resources/
-├── templates/      # Thymeleaf HTML Templates
+├── db/migration/   # Flyway SQL Migrations
 ├── static/         # Static assets (CSS, JS)
-└── db/migration/   # Flyway SQL Migrations
+└── templates/      # Thymeleaf HTML Templates
 ```
