@@ -19,79 +19,78 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 class SecurityIntegrationTest {
 
-    @Autowired
-    private WebApplicationContext context;
+        @Autowired
+        private WebApplicationContext context;
 
-    private MockMvc mockMvc;
+        private MockMvc mockMvc;
 
-    @BeforeEach
-    void setUp() {
-        mockMvc = MockMvcBuilders
-                .webAppContextSetup(context)
-                .apply(springSecurity())
-                .build();
-    }
+        @BeforeEach
+        void setUp() {
+                mockMvc = MockMvcBuilders
+                                .webAppContextSetup(context)
+                                .apply(springSecurity())
+                                .build();
+        }
 
-    @Test
-    void publicEndpoints_Reachability() throws Exception {
-        // We observed 302 for / and /login.
-        mockMvc.perform(get("/"))
-                .andExpect(result -> assertTrue(
-                        result.getResponse().getStatus() == 200 || result.getResponse().getStatus() == 302));
+        @Test
+        void publicEndpoints_Reachability() throws Exception {
+                mockMvc.perform(get("/"))
+                                .andExpect(result -> assertTrue(
+                                                result.getResponse().getStatus() == 200
+                                                                || result.getResponse().getStatus() == 302));
 
-        mockMvc.perform(get("/login"))
-                .andExpect(result -> assertTrue(
-                        result.getResponse().getStatus() == 200 || result.getResponse().getStatus() == 302));
+                mockMvc.perform(get("/login"))
+                                .andExpect(result -> assertTrue(
+                                                result.getResponse().getStatus() == 200
+                                                                || result.getResponse().getStatus() == 302));
 
-        mockMvc.perform(get("/register"))
-                .andExpect(result -> assertTrue(
-                        result.getResponse().getStatus() == 200 || result.getResponse().getStatus() == 302));
-    }
+                mockMvc.perform(get("/register"))
+                                .andExpect(result -> assertTrue(
+                                                result.getResponse().getStatus() == 200
+                                                                || result.getResponse().getStatus() == 302));
+        }
 
-    @Test
-    void securedEndpoints_Unauthenticated_RedirectsToLogin() throws Exception {
-        // Since we are mocking, the redirection URL might be absolute or relative
-        // depending on configuration
-        // We will just check for 3xx status
-        mockMvc.perform(get("/notes"))
-                .andExpect(status().is3xxRedirection());
-    }
+        @Test
+        void securedEndpoints_Unauthenticated_RedirectsToLogin() throws Exception {
+                mockMvc.perform(get("/notes"))
+                                .andExpect(status().is3xxRedirection());
+        }
 
-    @Test
-    void adminEndpoints_UserRole_AccessDenied() throws Exception {
-        // CustomAccessDeniedHandler redirects to /error?code=403
-        mockMvc.perform(get("/admin/dashboard")
-                .with(org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors
-                        .user("user").roles("USER")))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/error?code=403"));
-    }
+        @Test
+        void adminEndpoints_UserRole_AccessDenied() throws Exception {
+                // CustomAccessDeniedHandler redirects to /error?code=403
+                mockMvc.perform(get("/admin/dashboard")
+                                .with(org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors
+                                                .user("user").roles("USER")))
+                                .andExpect(status().is3xxRedirection())
+                                .andExpect(redirectedUrl("/error?code=403"));
+        }
 
-    @Test
-    void adminEndpoints_AdminRole_AccessAllowed() throws Exception {
-        // AdminController exists, so should be 200 OK
-        mockMvc.perform(get("/admin/dashboard")
-                .with(org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors
-                        .user("admin").roles("ADMIN")))
-                .andExpect(status().isOk());
-    }
+        @Test
+        void adminEndpoints_AdminRole_AccessAllowed() throws Exception {
+                // AdminController exists, so should be 200 OK
+                mockMvc.perform(get("/admin/dashboard")
+                                .with(org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors
+                                                .user("admin").roles("ADMIN")))
+                                .andExpect(status().isOk());
+        }
 
-    @Test
-    void login_Success() throws Exception {
-        mockMvc.perform(post("/login")
-                .param("email", "test@example.com")
-                .param("password", "password")
-                .with(csrf()))
-                .andExpect(status().is3xxRedirection());
-    }
+        @Test
+        void login_Success() throws Exception {
+                mockMvc.perform(post("/login")
+                                .param("email", "test@example.com")
+                                .param("password", "password")
+                                .with(csrf()))
+                                .andExpect(status().is3xxRedirection());
+        }
 
-    @Test
-    void csrf_Protection_MissingToken_Forbidden() throws Exception {
-        // CustomAccessDeniedHandler redirects to /error?code=403
-        mockMvc.perform(post("/login")
-                .param("email", "user")
-                .param("password", "pass"))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/error?code=403"));
-    }
+        @Test
+        void csrf_Protection_MissingToken_Forbidden() throws Exception {
+                // CustomAccessDeniedHandler redirects to /error?code=403
+                mockMvc.perform(post("/login")
+                                .param("email", "user")
+                                .param("password", "pass"))
+                                .andExpect(status().is3xxRedirection())
+                                .andExpect(redirectedUrl("/error?code=403"));
+        }
 }

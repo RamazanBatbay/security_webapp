@@ -35,8 +35,6 @@ class RateLimitIntegrationTest {
 
     @Test
     void testRateLimit_Login_Exceeded() throws Exception {
-        // Limit is 5 requests per minute.
-        // Send 5 allowed requests
         for (int i = 0; i < 100; i++) {
             mockMvc.perform(post("/login")
                     .param("email", "test@example.com")
@@ -45,7 +43,6 @@ class RateLimitIntegrationTest {
                     .andExpect(status().isFound());
         }
 
-        // Send 6th request - should be blocked
         mockMvc.perform(post("/login")
                 .param("email", "test@example.com")
                 .param("password", "password")

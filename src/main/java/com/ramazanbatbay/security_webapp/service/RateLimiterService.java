@@ -9,12 +9,9 @@ import java.util.concurrent.ConcurrentLinkedDeque;
 @Service
 public class RateLimiterService {
 
-    // Max requests allowed within the time window
     private static final int MAX_REQUESTS = 100;
-    // Time window in seconds (e.g., 60 seconds)
     private static final int TIME_WINDOW_SECONDS = 60;
 
-    // Key: IP Address, Value: Queue of timestamps of requests
     private final Map<String, ConcurrentLinkedDeque<Instant>> requestHistory = new ConcurrentHashMap<>();
 
     public boolean allowRequest(String ipAddress) {
@@ -24,7 +21,6 @@ public class RateLimiterService {
         Instant now = Instant.now();
         Instant windowStart = now.minusSeconds(TIME_WINDOW_SECONDS);
 
-        // Remove old requests that are outside the time window
         synchronized (timestamps) {
             while (!timestamps.isEmpty() && timestamps.peekFirst().isBefore(windowStart)) {
                 timestamps.pollFirst();
