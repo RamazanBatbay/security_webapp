@@ -29,10 +29,21 @@ A full-stack Spring Boot application demonstrating secure user management, perso
    ```bash
    cp .env.example .env
    ```
-   *Ensure `.env` contains: `DB_URL=jdbc:sqlite:security_webapp.db`*
+   **Required Variables:**
+   - `DB_FILE_NAME`: The name of the SQLite database file (e.g., `security_webapp.db`).
+   - `DB_URL`: The JDBC URL (e.g., `jdbc:sqlite:security_webapp.db`).
+
+   *Example `.env` content:*
+   ```properties
+   DB_URL=jdbc:sqlite:security_webapp.db
+   DB_FILE_NAME=security_webapp.db
+   ```
 
 2. **Database**
-   The application uses a local SQLite database file `security_webapp.db`. It will be automatically created and migrated on the first run.
+   The application uses a local SQLite database.
+   - **Location**: The database file (default: `security_webapp.db`) is stored in the project root.
+   - **Initialization**: The file is automatically created and schema migrated (via Flyway) on the first run.
+   - **Reset**: To reset the database, simply delete the `.db` file and restart the application.
 
 ## Running the Application
 
