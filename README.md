@@ -65,6 +65,37 @@ Use the Gradle Wrapper to run the app:
 
 To run tests with JaCoCo code coverage:
 
+### Test Results
+
+**Overall Status**: 20/20 Tests Passed ✅
+
+| Test Class | Test Name | Status |
+|:---|:---|:---:|
+| **SecurityWebappApplicationTests** | `contextLoads` | ✅ Passed |
+| **RateLimitIntegrationTest** | `testRateLimit_Login_Exceeded` | ✅ Passed |
+| **SecurityIntegrationTest** | `publicEndpoints_Reachability` | ✅ Passed |
+| **SecurityIntegrationTest** | `securedEndpoints_Unauthenticated_RedirectsToLogin` | ✅ Passed |
+| **SecurityIntegrationTest** | `adminEndpoints_UserRole_AccessDenied` | ✅ Passed |
+| **SecurityIntegrationTest** | `adminEndpoints_AdminRole_AccessAllowed` | ✅ Passed |
+| **SecurityIntegrationTest** | `login_Success` | ✅ Passed |
+| **SecurityIntegrationTest** | `csrf_Protection_MissingToken_Forbidden` | ✅ Passed |
+| **UserServiceTest** | `createUser_Success` | ✅ Passed |
+| **UserServiceTest** | `createUser_EmailTaken` | ✅ Passed |
+| **UserServiceTest** | `authenticate_Success` | ✅ Passed |
+| **UserServiceTest** | `authenticate_Failure_UserNotFound` | ✅ Passed |
+| **UserServiceTest** | `authenticate_Failure_WrongPassword` | ✅ Passed |
+| **ValidationTest** | `isValid_ValidPassword_ReturnsTrue` | ✅ Passed |
+| **ValidationTest** | `isValid_TooShort_ReturnsFalse` | ✅ Passed |
+| **ValidationTest** | `isValid_NoUppercase_ReturnsFalse` | ✅ Passed |
+| **ValidationTest** | `isValid_NoLowercase_ReturnsFalse` | ✅ Passed |
+| **ValidationTest** | `isValid_NoDigit_ReturnsFalse` | ✅ Passed |
+| **ValidationTest** | `isValid_NoSpecialChar_ReturnsFalse` | ✅ Passed |
+| **ValidationTest** | `isValid_NullPassword_ReturnsFalse` | ✅ Passed |
+
+> [!NOTE]
+> Tests are automatically run on every push and pull request via GitHub Actions. You can see the current status at the top of this README.
+
+
 **Windows:**
 ```powershell
 .\gradlew test jacocoTestReport
@@ -98,6 +129,7 @@ The application also exposes REST endpoints for programmatic access:
 
 ## Project Structure
 
+```text
 src/main/java/com/ramazanbatbay/security_webapp/
 ├── config/         # Security Configuration (SecurityConfig.java)
 ├── controller/     # REST Controllers for API endpoints
@@ -108,8 +140,10 @@ src/main/java/com/ramazanbatbay/security_webapp/
 ├── security/       # Security Filters and Logic
 ├── service/        # Business Logic
 └── validation/     # Custom Validation Logic
+```
 
 
+```text
 src/main/resources/
 ├── db/migration/   # Flyway SQL Migrations
 ├── static/         # Static assets (CSS, JS)
