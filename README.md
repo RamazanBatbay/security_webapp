@@ -2,6 +2,8 @@
 
 A full-stack Spring Boot application demonstrating secure user management, personalized notes, and a responsive UI built with Thymeleaf and TailwindCSS.
 
+# Student Self-check Worksheet Included[Student Checklist](./student_self_checklist.md)
+
 ## Features
 
 - **User Authentication**: Secure Login and Registration pages with validation.
